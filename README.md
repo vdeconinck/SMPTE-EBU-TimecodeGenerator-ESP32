@@ -1,29 +1,29 @@
-# SMPTE EB linear time cod generator.
+# SMPTE EBU linear time code generator.
 
 ESP32 based SMPTE/EBU timecode generator, with NTP slaving, for Leitch and similar studio/broadcast clocks.
 
 ## Background
 
 So we have a few  Leitch Illuminated 12 Inch SMPTE Timecode Analog Broadcast Studio Clocks and its more
-modern digital, 19" rack sized variant. The each take a typical studio time signal; a SMPTE/EBU style
+modern digital, 19" rack sized variant. Each take a typical studio time signal; a SMPTE/EBU style
 'audio' signal (4V p.p., baud, 80 bits, 2400Hz/4800hz FM modulated sequences of 80 bits).
 
 ![analog studio clock](/images/analog.png) ![digital studio clock](/images/digital.jpg)
 
-These are then connected to some ESP32's that pick up the time from the office its NTP
-serves; and provide these to the clocks.
+These are then connected to some ESP32's that pick up the time from the office NTP
+servers; and provide these to the clocks.
 
 It runs a small website to allow for a fiddle factor. E.g. to make sure people make their train.
 
 ## Timezone suport
 
-Use is made of the Espressif build in time zone support. A more complete list of TZ specifiers
+Use is made of the Espressif built-in time zone support. A more complete list of TZ specifiers
 can be found at https://ftp.fau.de/aminet/util/time/tzinfo.txt and https://gist.github.com/alwynallan/24d96091655391107939
 
 ## Hardware
 
 On the back of all clocks is a typical red/black two wire spring terminal. This is internally wired to
-a 2x6 IDC connector; pin 1 and 2. It turns out that pin 3 and 4 contain a nice 5V voltage. All in all
+a 2x6 (or 2x5) IDC connector; pin 1 and 2. It turns out that pin 3 and 4 contain a nice 5V voltage. All in all
 these 4 wires are used to wire up the ESP32 (Wemos) boards.
 
 It has been reported that some Leitch ADC-5100 directly accept the 3v3 pulse signal from the ESP32 (see https://github.com/dirkx/SMPTE-EBU-TimecodeGenerator-ESP32/issues/9#issue-1230780644).
@@ -46,7 +46,7 @@ We've intentionally wired the transistors resistor to the original voltage - to 
 
 Some of the clocks are very sensitive to timing that is lightly off; or when you skip a frame. The angry red error leds starts to flash accusingly for a few seconds then.
 
-So we're using a careful double buffer approach with the hardwar based RTM pulse generator. As the latter will glitch when not fed multiples of 64 pulses we allow for 80 bit SMPTE/EBU frames to cross boundaries. This makes it a tad hard to figure out to 'set' the clock. 
+So we're using a careful double buffer approach with the hardware based RTM pulse generator. As the latter will glitch when not fed multiples of 64 pulses we allow for 80 bit SMPTE/EBU frames to cross boundaries. This makes it a tad hard to figure out to 'set' the clock. 
 
 ## Caveats
 
